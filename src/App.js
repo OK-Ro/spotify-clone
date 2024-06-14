@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Login from "./Login";
+import React, { useEffect } from "react";
 import "./App.css";
+import Login from "./Login";
 import { getTokenFromUrl } from "./spotify";
 import SpotifyWebApi from "spotify-web-api-js";
 import Player from "./Player";
@@ -15,12 +15,13 @@ function App() {
     const hash = getTokenFromUrl();
     window.location.hash = "";
     const _token = hash.access_token;
+
     if (_token) {
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       });
-      console.log("[token]", token);
+
       spotify.setAccessToken(_token);
       spotify.getMe().then((user) => {
         dispatch({
@@ -41,13 +42,15 @@ function App() {
         });
       });
     }
-  }, [dispatc]);
+  }, [dispatch]); // Ensure dispatch is included in the dependency array
 
-  return (
-    <div className="App">
-      {token ? <Player spotify={spotify} /> : <Login />}
-    </div>
-  );
+  // Render login if no token
+  if (!token) {
+    return <Login />;
+  }
+
+  // Render player if token exists
+  return <Player spotify={spotify} />;
 }
 
 export default App;
