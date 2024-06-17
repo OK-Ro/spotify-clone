@@ -48,7 +48,7 @@ const HeaderRight = styled.div`
 
 // Functional component
 function Header() {
-  const [{ user }, dispatch] = useDataLayerValue();
+  const [{ user }] = useDataLayerValue();
 
   return (
     <HeaderContainer>
